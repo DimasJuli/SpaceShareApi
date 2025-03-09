@@ -13,9 +13,14 @@ return new class extends Migration
     {
         Schema::create('pinjam_barang', function (Blueprint $table) {
             $table->id();
-            $table->int('qty');
-            $table->string('lokasi_barang');
-            $table->enum('status', ['ditolak', 'diterima']);
+            $table->foreignId('barang_id')->constrained('barang')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade');
+            $table->dateTime('tgl_mulai');
+            $table->dateTime('tgl_selesai');
+            $table->integer('qty');
+            $table->foreignId('status')->constrained('status_peminjaman')->onDelete('cascade');
+            $table->boolean('is_returned')->default(false);
             $table->timestamps();
         });
     }

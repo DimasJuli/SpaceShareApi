@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('ruang', function (Blueprint $table) {
             $table->id();
-            $table->int('nomor');
+            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade');
+            $table->string('nomor')->unique();
             $table->string('nama');
-            $table->int('stok');
-            $table->enum('status', ['tersedia', 'tidak tersedia']);
-            $table->string('foto');
+            $table->foreignId('status')->constrained('status_ruang')->onDelete('cascade');
+            $table->string('foto')->nullable();
+            $table->string('lokasi');
             $table->timestamps();
         });
     }
