@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
+use App\Models\User;
 
-class DaftarBarang extends Controller
+class DashboardAdmin extends Controller
 {
     public function index()
     {
-        $barang = Barang::with('statusBarang')->get();
+        $user = User::get();
 
         return response()->json([
             'message' => 'Daftar barang berhasil diambil',
-            'data' => $barang
+            'data' => $user
         ]);
     }
 }
