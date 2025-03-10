@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('ruang_id')->constrained('ruang')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('admin')->onDelete('cascade');
             $table->dateTime('tgl_mulai');
             $table->dateTime('tgl_selesai');
             $table->foreignId('status')->constrained('status_peminjaman')->onDelete('cascade');

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('barang', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('admin_id')->constrained('admins')->onDelete('cascade');
+            $table->foreignId('admin_id')->constrained('admin')->onDelete('cascade');
             $table->string('nomor')->unique();
             $table->string('nama');
             $table->integer('stok');
