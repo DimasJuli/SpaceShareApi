@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PeminjamanRuangController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
-use App\Http\Controllers\DaftarBarang;
-use App\Http\Controllers\DaftarRuang;
-use App\Http\Controllers\DashboardAdmin;
+use App\Http\Controllers\DaftarBarangController;
+use App\Http\Controllers\DaftarRuangController;
+use App\Http\Controllers\DashboardAdminController;
+use App\Http\Controllers\PeminjamanBarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +25,11 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'logout']);
-        Route::get('/barang', [DaftarBarang::class, 'index']);
-        Route::get('/ruang', [DaftarRuang::class, 'index']);
-        Route::get('/dashboard', [DashboardAdmin::class, 'index']);
-        Route::get('/barang/{id}', [DaftarBarang::class, 'getBarangById']);
-        Route::get('/ruang/{id}', [DaftarRuang::class, 'getRuangById']);
+        Route::get('/barang', [DaftarBarangController::class, 'index']);
+        Route::get('/ruang', [DaftarRuangController::class, 'index']);
+        Route::get('/dashboard', [DashboardAdminController::class, 'index']);
+        Route::get('/barang/{id}', [DaftarBarangController::class, 'getBarangById']);
+        Route::get('/ruang/{id}', [DaftarRuangController::class, 'getRuangById']);
     });
 });
 
@@ -37,9 +39,11 @@ Route::prefix('user')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::get('/barang', [DaftarBarang::class, 'index']);
-        Route::get('/ruang', [DaftarRuang::class, 'index']);
-        Route::get('/barang/{id}', [DaftarBarang::class, 'getBarangById']);
-        Route::get('/ruang/{id}', [DaftarRuang::class, 'getRuangById']);
+        Route::get('/barang', [DaftarBarangController::class, 'index']);
+        Route::get('/ruang', [DaftarRuangController::class, 'index']);
+        Route::get('/barang/{id}', [DaftarBarangController::class, 'getBarangById']);
+        Route::get('/ruang/{id}', [DaftarRuangController::class, 'getRuangById']);
+        Route::post('/pinjam-ruang', [PeminjamanRuangController::class, 'create']);
+        Route::post('/pinjam-barang', [PeminjamanBarangController::class, 'create']);
     });
 });

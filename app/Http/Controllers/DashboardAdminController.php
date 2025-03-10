@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 
-class DashboardAdmin extends Controller
+class DashboardAdminController extends Controller
 {
     public function index()
     {

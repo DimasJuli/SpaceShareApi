@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
+use App\Models\Ruang;
 
-class DaftarBarang extends Controller
+class DaftarRuangController extends Controller
 {
     public function index()
     {
-        $barang = Barang::with('statusBarang')->get();
+        $barang = Ruang::with('statusRuang')->get();
 
         return response()->json([
             'message' => 'Daftar barang berhasil diambil',
@@ -16,12 +16,12 @@ class DaftarBarang extends Controller
         ]);
     }
 
-    public function getBarangById($id)
+    public function getRuangById($id)
     {
-        $barangbyid = Barang::get()->where('id',$id)->first();
+        $ruangbyid = Ruang::get()->where('id',$id)->first();
         return response()->json([
             'message' => 'Detail berhasil diambil',
-            'data' => $barangbyid
+            'data' => $ruangbyid
         ]);
     }
 }
