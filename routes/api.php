@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\DaftarBarang;
 
 
 /*
@@ -17,9 +17,19 @@ use App\Http\Controllers\AdminAuthController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+Route::prefix('admin')->group(function () {
+    Route::post('/login', [AdminAuthController::class, 'login']);
 
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/admin/logout', [AdminAuthController::class, 'logout']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AdminAuthController::class, 'logout']);
+        Route::get('/barang', [DaftarBarang::class, 'index']);
+    });
+});
 
+Route::prefix('user')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+    });
+});
