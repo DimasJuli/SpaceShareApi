@@ -15,4 +15,13 @@ class DaftarBarang extends Controller
             'data' => $barang
         ]);
     }
+
+    public function getBarangById($id)
+    {
+        $barangbyid = Barang::get()->where('id',$id)->first();
+        return response()->json([
+            'message' => 'Detail berhasil diambil',
+            'data' => $barangbyid
+        ]);
+    }
 }

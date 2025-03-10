@@ -15,4 +15,13 @@ class DaftarRuang extends Controller
             'data' => $barang
         ]);
     }
+
+    public function getRuangById($id)
+    {
+        $ruangbyid = Ruang::get()->where('id',$id)->first();
+        return response()->json([
+            'message' => 'Detail berhasil diambil',
+            'data' => $ruangbyid
+        ]);
+    }
 }

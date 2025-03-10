@@ -11,6 +11,8 @@ class Barang extends Model
 
     protected $fillable = ['admin_id', 'nomor', 'nama', 'stok', 'status', 'foto', 'lokasi'];
 
+    protected $table = 'barang';
+
     public function admin()
     {
         return $this->belongsTo(Admin::class);

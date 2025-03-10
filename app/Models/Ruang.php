@@ -11,6 +11,8 @@ class Ruang extends Model
 
     protected $fillable = ['admin_id', 'nomor', 'nama', 'status', 'foto', 'lokasi'];
 
+    protected $table = 'ruang';
+
     public function admin()
     {
         return $this->belongsTo(Admin::class);
