@@ -30,6 +30,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [DashboardAdminController::class, 'index']);
         Route::get('/barang/{id}', [DaftarBarangController::class, 'getBarangById']);
         Route::get('/ruang/{id}', [DaftarRuangController::class, 'getRuangById']);
+        Route::put('/approve-return-ruang/{id}', [PeminjamanRuangController::class, 'approveRejectReturnRuang']);
+        Route::put('/approve-return-barang/{id}', [PeminjamanBarangController::class, 'approveRejectReturnBarang']);
     });
 });
 
@@ -45,5 +47,7 @@ Route::prefix('user')->group(function () {
         Route::get('/ruang/{id}', [DaftarRuangController::class, 'getRuangById']);
         Route::post('/pinjam-ruang', [PeminjamanRuangController::class, 'create']);
         Route::post('/pinjam-barang', [PeminjamanBarangController::class, 'create']);
+        Route::put('/pinjam-barang/{id}/request-return', [PeminjamanBarangController::class, 'requestReturnBarang']);
+        Route::put('/pinjam-ruang/{id}/request-return', [PeminjamanRuangController::class, 'requestReturnRuang']);
     });
 });
