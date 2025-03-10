@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DaftarBarang;
-
+use App\Http\Controllers\DaftarRuang;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,7 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AdminAuthController::class, 'logout']);
         Route::get('/barang', [DaftarBarang::class, 'index']);
+        Route::get('/ruang', [DaftarRuang::class, 'index']);
     });
 });
 
@@ -31,5 +32,7 @@ Route::prefix('user')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
+        Route::get('/barang', [DaftarBarang::class, 'index']);
+        Route::get('/ruang', [DaftarRuang::class, 'index']);
     });
 });
