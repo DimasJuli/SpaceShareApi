@@ -88,28 +88,42 @@ class PeminjamanRuangController extends Controller
     }
 
     public function approveRejectPeminjamanRuang(Request $request, $id)
-{
-    $request->validate([
-        'status' => 'required|integer|in:2,3',
-    ]);
+    {
+        $request->validate([
+            'status' => 'required|integer|in:2,3',
+        ]);
 
-    $peminjaman = PinjamRuang::where('id', $id)
-        ->where('status', 1)
-        ->first();
+        $peminjaman = PinjamRuang::where('id', $id)
+            ->where('status', 1)
+            ->first();
 
-    if (!$peminjaman) {
-        return response()->json(['message' => 'Peminjaman tidak ditemukan atau sudah diproses'], 404);
+        if (!$peminjaman) {
+            return response()->json(['message' => 'Peminjaman tidak ditemukan atau sudah diproses'], 404);
+        }
+
+        $peminjaman->update([
+            'status' => $request->status,
+            'admin_id' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'message' => $request->status == 2 ? 'Peminjaman ruang disetujui' : 'Peminjaman ruang ditolak',
+            'data' => $peminjaman,
+        ]);
     }
 
-    $peminjaman->update([
-        'status' => $request->status,
-        'admin_id' => Auth::id(),
-    ]);
+    public function historyPeminjamanRuang()
+    {
+        $userId = Auth::id();
 
-    return response()->json([
-        'message' => $request->status == 2 ? 'Peminjaman ruang disetujui' : 'Peminjaman ruang ditolak',
-        'data' => $peminjaman,
-    ]);
-}
+        $history = PinjamRuang::where('user_id', $userId)
+            ->with(['ruang', 'statusPeminjaman'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
+        return response()->json([
+            'message' => 'Riwayat peminjaman ruang berhasil diambil',
+            'data' => $history,
+        ]);
+    }
 }

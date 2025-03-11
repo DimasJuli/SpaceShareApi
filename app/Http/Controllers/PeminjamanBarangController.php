@@ -89,28 +89,42 @@ class PeminjamanBarangController extends Controller
     }
 
     public function approveRejectPeminjamanBarang(Request $request, $id)
-{
-    $request->validate([
-        'status' => 'required|integer|in:2,3',
-    ]);
+    {
+        $request->validate([
+            'status' => 'required|integer|in:2,3',
+        ]);
 
-    $peminjaman = PinjamBarang::where('id', $id)
-        ->where('status', 1)
-        ->first();
+        $peminjaman = PinjamBarang::where('id', $id)
+            ->where('status', 1)
+            ->first();
 
-    if (!$peminjaman) {
-        return response()->json(['message' => 'Peminjaman tidak ditemukan atau sudah diproses'], 404);
+        if (!$peminjaman) {
+            return response()->json(['message' => 'Peminjaman tidak ditemukan atau sudah diproses'], 404);
+        }
+
+        $peminjaman->update([
+            'status' => $request->status,
+            'admin_id' => Auth::id(),
+        ]);
+
+        return response()->json([
+            'message' => $request->status == 2 ? 'Peminjaman barang disetujui' : 'Peminjaman barang ditolak',
+            'data' => $peminjaman,
+        ]);
     }
 
-    $peminjaman->update([
-        'status' => $request->status,
-        'admin_id' => Auth::id(),
-    ]);
+    public function historyPeminjamanBarang()
+    {
+        $userId = Auth::id();
 
-    return response()->json([
-        'message' => $request->status == 2 ? 'Peminjaman barang disetujui' : 'Peminjaman barang ditolak',
-        'data' => $peminjaman,
-    ]);
-}
+        $history = PinjamBarang::where('user_id', $userId)
+            ->with(['barang', 'statusPeminjaman'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
+        return response()->json([
+            'message' => 'Riwayat peminjaman barang berhasil diambil',
+            'data' => $history,
+        ]);
+    }
 }

@@ -53,5 +53,7 @@ Route::prefix('user')->group(function () {
         Route::post('/pinjam-barang', [PeminjamanBarangController::class, 'create']);
         Route::put('/pinjam-barang/{id}/request-return', [PeminjamanBarangController::class, 'requestReturnBarang']);
         Route::put('/pinjam-ruang/{id}/request-return', [PeminjamanRuangController::class, 'requestReturnRuang']);
+        Route::get('/history/barang', [PeminjamanBarangController::class, 'historyPeminjamanBarang']);
+        Route::get('/history/ruang', [PeminjamanRuangController::class, 'historyPeminjamanRuang']);
     });
 });
