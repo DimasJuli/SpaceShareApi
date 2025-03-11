@@ -19,6 +19,18 @@ class AuthController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
+        if (User::where('email', $request->email)->exists()) {
+            return response()->json([
+                'message' => 'Email sudah digunakan, silakan gunakan email lain.'
+            ], 422);
+        }
+
+        if (User::where('nim', $request->nim)->exists()) {
+            return response()->json([
+                'message' => 'User sudah terdaftar.'
+            ], 422);
+        }
+
         $user = User::create([
             'nama' => $request->nama,
             'nim' => $request->nim,
@@ -35,6 +47,7 @@ class AuthController extends Controller
             'token' => $token,
         ], 201);
     }
+
 
     public function login(Request $request)
     {

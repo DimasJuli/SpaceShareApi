@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ruang;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DaftarRuangController extends Controller
 {
     public function index()
     {
-        $barang = Ruang::with('statusRuang')->get();
+        $ruang = Ruang::with('statusRuang')->get();
 
         return response()->json([
-            'message' => 'Daftar barang berhasil diambil',
-            'data' => $barang
+            'message' => 'Daftar ruang berhasil diambil',
+            'data' => $ruang
         ]);
     }
 
@@ -23,5 +25,41 @@ class DaftarRuangController extends Controller
             'message' => 'Detail berhasil diambil',
             'data' => $ruangbyid
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string',
+            'status' => 'required|exists:status_ruang,id',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'lokasi' => 'nullable|string',
+        ]);
+
+        $data = $request->all();
+        $data['admin_id'] = auth()->id();
+
+        $lastRuang = Ruang::latest('id')->first();
+        if ($lastRuang) {
+            preg_match('/\d+$/', $lastRuang->nomor, $matches);
+            $lastNumber = $matches ? (int)$matches[0] : 0;
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        $data['nomor'] = 'RG' . str_pad($newNumber, 3, '0', STR_PAD_LEFT);
+
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('ruang_foto', 'public');
+            $data['foto'] = $path;
+        }
+
+        $ruang = Ruang::create($data);
+
+        return response()->json([
+            'message' => 'Ruang berhasil ditambahkan',
+            'data' => $ruang,
+        ], 201);
     }
 }
