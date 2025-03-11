@@ -87,4 +87,30 @@ class PeminjamanBarangController extends Controller
             'data' => $peminjaman,
         ]);
     }
+
+    public function approveRejectPeminjamanBarang(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|integer|in:2,3',
+    ]);
+
+    $peminjaman = PinjamBarang::where('id', $id)
+        ->where('status', 1)
+        ->first();
+
+    if (!$peminjaman) {
+        return response()->json(['message' => 'Peminjaman tidak ditemukan atau sudah diproses'], 404);
+    }
+
+    $peminjaman->update([
+        'status' => $request->status,
+        'admin_id' => Auth::id(),
+    ]);
+
+    return response()->json([
+        'message' => $request->status == 2 ? 'Peminjaman barang disetujui' : 'Peminjaman barang ditolak',
+        'data' => $peminjaman,
+    ]);
+}
+
 }

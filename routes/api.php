@@ -34,6 +34,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/ruang/{id}', [DaftarRuangController::class, 'getRuangById']);
         Route::put('/approve-return-ruang/{id}', [PeminjamanRuangController::class, 'approveRejectReturnRuang']);
         Route::put('/approve-return-barang/{id}', [PeminjamanBarangController::class, 'approveRejectReturnBarang']);
+        Route::put('/approve-reject-peminjaman-ruang/{id}', [PeminjamanRuangController::class, 'approveRejectPeminjamanRuang']);
+        Route::put('/approve-reject-peminjaman-barang/{id}', [PeminjamanBarangController::class, 'approveRejectPeminjamanBarang']);
     });
 });
 
